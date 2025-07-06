@@ -45,7 +45,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
       filled: true,
       fillColor: Colors.white.withOpacity(0.9),
       labelText: label,
-      prefixIcon: Icon(icon, color: Colors.deepOrange),
+      prefixIcon: Icon(icon, color: Colors.brown),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
         borderSide: BorderSide.none,
@@ -54,7 +54,7 @@ class _LoginViewState extends ConsumerState<LoginView> {
           ? IconButton(
               icon: Icon(
                 _hidePassword ? Icons.visibility_off : Icons.visibility,
-                color: Colors.deepOrange,
+                color: Colors.brown,
               ),
               onPressed: togglePassword,
             )

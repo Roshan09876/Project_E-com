@@ -11,6 +11,15 @@ class FavoriteView extends ConsumerStatefulWidget {
 class _FavoriteViewState extends ConsumerState<FavoriteView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("Fav Page Under Development")));
+    return Scaffold(
+        backgroundColor: const Color(0xFFFDF8F3),
+       appBar: AppBar(
+        backgroundColor: Colors.brown,
+        title: Text(
+          'Favorite Items',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Center(child: Text("Fav Page Under Development")));
   }
 }

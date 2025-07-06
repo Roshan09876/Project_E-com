@@ -13,6 +13,7 @@ ProductApiModel _$ProductApiModelFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String,
       productType: json['productType'] as String,
       productPrice: json['productPrice'] as String,
+      discountPrice: json['discountPrice'] as String,
       image: json['image'] as String,
     );
 
@@ -23,5 +24,6 @@ Map<String, dynamic> _$ProductApiModelToJson(ProductApiModel instance) =>
       'description': instance.description,
       'productType': instance.productType,
       'productPrice': instance.productPrice,
+      'discountPrice': instance.discountPrice,
       'image': instance.image,
     };

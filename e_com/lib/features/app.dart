@@ -17,6 +17,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp(
       initialRoute:  AppRoutes.registerRoute,
       routes: AppRoutes.getApplicationRoute(),
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
   }

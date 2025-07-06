@@ -96,7 +96,7 @@ class AuthViewModel extends StateNotifier<AuthState> {
           showMessage: true,
         );
         EasyLoading.show(
-          status: 'Please Wait...',
+          status: 'Logging in...',
           maskType: EasyLoadingMaskType.black,
         );
 
