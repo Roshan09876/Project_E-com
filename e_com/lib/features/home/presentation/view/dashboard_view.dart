@@ -1,8 +1,7 @@
 import 'package:e_com/features/products/presentation/state/product_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:e_com/features/products/presentation/view_model/product_view_model.dart'; // Assuming this path is correct
+import 'package:e_com/features/products/presentation/view_model/product_view_model.dart';
 
 class DashboardView extends ConsumerStatefulWidget {
   const DashboardView({super.key});
@@ -25,88 +24,69 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
     final productState = ref.watch(productViewModelProvider);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F2F5), 
+      backgroundColor: const Color(0xFFFDF8F3),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFF8D6E63),
         automaticallyImplyLeading: false,
-        elevation: 2.0, 
-        centerTitle: false, 
+        elevation: 3,
+        centerTitle: true,
         title: const Text(
-          'Trendify Store',
+          'HandiCrafted',
           style: TextStyle(
-            color: Color(0xFFE53935), 
-            fontWeight: FontWeight.w800, 
-            fontSize: 26, 
-            letterSpacing: 0.8,
+            fontFamily: 'Georgia',
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 26,
+            letterSpacing: 1.5,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none_rounded, color: Color(0xFFE53935), size: 28), // Rounded icon, vibrant red
-            onPressed: () {
-
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_bag_outlined, color: Color(0xFFE53935), size: 28), // Modern bag icon
-            onPressed: () {
-
-            },
-          ),
-          const SizedBox(width: 12),
-        ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 16.0), // Increased horizontal padding
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Search bar
+            // Greeting Section
+            const Text(
+              'Discover Unique Handcrafted Items',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF5D4037),
+              ),
+            ),
+            const SizedBox(height: 10),
+
+            // Search Bar
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30), 
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.08),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4), 
-                  ),
-                ],
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Colors.brown.shade100),
               ),
-              child: TextField(
+              child: const TextField(
                 decoration: InputDecoration(
-                  hintText: 'Search products...',
-                  hintStyle: TextStyle(color: Colors.grey[500]),
+                  hintText: 'Search for handmade products...',
                   border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search, color: Color(0xFFE53935), size: 24),
-                  contentPadding: const EdgeInsets.symmetric(vertical: 14.0), // Adjust padding
+                  icon: Icon(Icons.search, color: Color(0xFF8D6E63)),
                 ),
-                style: const TextStyle(fontSize: 16),
               ),
             ),
-            const SizedBox(height: 30), 
-            const Text(
-              'Trending Items', 
-              style: TextStyle(
-                fontWeight: FontWeight.w700, 
-                fontSize: 22, 
-                color: Color(0xFF2C3E50), 
-              ),
-            ),
-            const Text(
-              'Find what moves you...', 
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-                color: Colors.grey,
-              ),
-            ),
-            const SizedBox(height: 20), 
 
+            const SizedBox(height: 20),
+            const Text(
+              'Featured Crafts',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF4E342E),
+              ),
+            ),
+            const SizedBox(height: 10),
 
             Expanded(
-              child: AnimatedSwitcher( 
+              child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: _buildProductContent(productState),
               ),
@@ -119,122 +99,105 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
 
   Widget _buildProductContent(ProductState productState) {
     if (productState.isLoading) {
-      return const Center(key: ValueKey('loading'), child: CircularProgressIndicator(color: Color(0xFFE53935)));
+      return const Center(child: CircularProgressIndicator(color: Color(0xFF8D6E63)));
     } else if (productState.error != null) {
       return Center(
-        key: ValueKey('error'),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.error_outline_rounded, color: Colors.redAccent, size: 40),
-            const SizedBox(height: 10),
-            Text(
-              productState.error!,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.redAccent, fontSize: 16),
-            ),
-          ],
+        child: Text(
+          productState.error!,
+          style: const TextStyle(color: Colors.redAccent, fontSize: 16),
         ),
       );
     } else if (productState.products.isEmpty) {
-      return Center(
-        key: ValueKey('no_products'),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.widgets_outlined, color: Colors.grey[400], size: 50),
-            const SizedBox(height: 10),
-            const Text(
-              'No products found. Check back later!',
-              style: TextStyle(color: Colors.grey, fontSize: 16),
-            ),
-          ],
+      return const Center(
+        child: Text(
+          'No handcrafted items found.',
+          style: TextStyle(color: Colors.grey),
         ),
       );
     }
 
     return GridView.builder(
-      key: ValueKey('product_grid'),
-      physics: const BouncingScrollPhysics(),
       itemCount: productState.products.length,
+      physics: const BouncingScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.75,
-        crossAxisSpacing: 18, 
-        mainAxisSpacing: 18, 
+        childAspectRatio: 0.68,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
       ),
       itemBuilder: (context, index) {
         final product = productState.products[index];
-        return Material( 
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20), 
-          elevation: 6, 
-          shadowColor: Colors.black.withOpacity(0.1), 
-          child: InkWell( 
-            onTap: () {
-            },
-            borderRadius: BorderRadius.circular(20),
+        return Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.brown.withOpacity(0.08),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(18),
+            onTap: () {},
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Image container
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFF3E0),
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(20), 
-                      ),
-                      image: product.image.isNotEmpty
-                          ? DecorationImage(
-                              image: NetworkImage(product.image),
-                              fit: BoxFit.cover,
-                            )
-                          : null,
-                    ),
-                    child: product.image.isEmpty
-                        ? Center(
-                            child: Icon(
-                              Icons.image_not_supported_outlined,
-                              color: Colors.orange[300],
-                              size: 50,
-                            ),
+                // Product Image
+                Container(
+                  height: 150,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(18)),
+                    image: product.image.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(product.image),
+                            fit: BoxFit.cover,
                           )
                         : null,
+                    color: const Color(0xFFFBE9E7),
                   ),
+                  child: product.image.isEmpty
+                      ? Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: Colors.brown.shade200,
+                            size: 40,
+                          ),
+                        )
+                      : null,
                 ),
+
+                // Product Details
                 Padding(
-                  padding: const EdgeInsets.all(12.0), 
+                  padding: const EdgeInsets.all(12),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         product.title,
-                        maxLines: 2, 
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontWeight: FontWeight.w700, 
-                          fontSize: 16,
-                          color: Color(0xFF2C3E50),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF3E2723),
                         ),
                       ),
-                      const SizedBox(height: 6), 
+                      const SizedBox(height: 6),
                       Text(
                         'Rs. ${product.productPrice}',
                         style: const TextStyle(
-                          color: Color(0xFFE53935), 
-                          fontWeight: FontWeight.w900, 
-                          fontSize: 17,
+                          fontSize: 16,
+                          color: Color(0xFF8D6E63),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Align(
                         alignment: Alignment.bottomRight,
-                        child: Icon(
-                          Icons.favorite_border_rounded, 
-                          color: Colors.grey[400],
-                          size: 24,
-                        ),
+                        child: Icon(Icons.favorite_border, color: Colors.grey.shade400),
                       ),
                     ],
                   ),

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken")
 
 const signUp = async (req, res) => {
     console.log(req.body);
-    const { fullName, email, userName, phoneNumber, password } = req.body;
+    const { firstName, lastName, email, userName, phoneNumber, password } = req.body;
     let image = req.files && req.files.image;
 
     if (!image) {
@@ -19,15 +19,14 @@ const signUp = async (req, res) => {
         });
     }
 
-    if (!fullName || !email || !userName || !phoneNumber || !password) {
+    if (!firstName || !lastName || !email || !userName || !phoneNumber || !password) {
         return res.status(400).json({
             success: false,
             message: "Please enter all fields"
         });
     }
     try {
-        // Uploading image to cloudinary if image path is provided
-        let uploadedImage = { secure_url: '' }; // default empty string for image URL
+        let uploadedImage = { secure_url: '' }; 
 
         if (image.path) {
             uploadedImage = await cloudinary.v2.uploader.upload(
@@ -55,7 +54,8 @@ const signUp = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
         const userData = new User({
-            fullName: fullName,
+            firstName: firstName,
+            lastName: lastName,
             email: email,
             userName: userName,
             phoneNumber: phoneNumber,

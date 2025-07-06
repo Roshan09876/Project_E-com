@@ -1,7 +1,8 @@
 class AuthEntity{
   AuthEntity({
     this.id,
-    this.fullName,
+    this.firstName,
+    this.lastName,
     this.email,
     this.userName,
     this.phoneNumber,
@@ -10,7 +11,8 @@ class AuthEntity{
     this.image
   });
     final String? id;
-  final String? fullName;
+  final String? firstName;
+  final String? lastName;
   final String? email;
   final String? userName;
   final String? phoneNumber;

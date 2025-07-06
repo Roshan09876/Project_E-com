@@ -13,29 +13,26 @@ class RegisterView extends ConsumerStatefulWidget {
 class _RegisterViewState extends ConsumerState<RegisterView> {
   final _formKey = GlobalKey<FormState>();
 
-  final fullNameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final userNameController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
 
-  bool _obscurePassword = true;
+  bool _hidePassword = true;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      final fullName = fullNameController.text.trim();
-      final email = emailController.text.trim();
-      final userName = userNameController.text.trim();
-      final phoneNumber = phoneController.text.trim();
-      final password = passwordController.text.trim();
       ref
           .read(authViewModelProvider.notifier)
           .register(
-            fullName: fullName,
-            email: email,
-            userName: userName,
-            phoneNumber: phoneNumber,
-            password: password,
+            firstName: firstNameController.text.trim(),
+            lastName: lastNameController.text.trim(),
+            email: emailController.text.trim(),
+            userName: userNameController.text.trim(),
+            phoneNumber: phoneController.text.trim(),
+            password: passwordController.text.trim(),
             context: context,
           );
     }
@@ -43,7 +40,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   @override
   void dispose() {
-    fullNameController.dispose();
+    firstNameController.dispose();
+    lastNameController.dispose();
     emailController.dispose();
     userNameController.dispose();
     phoneController.dispose();
@@ -51,180 +49,218 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
     super.dispose();
   }
 
+  InputDecoration _inputDecoration(String label, IconData icon) {
+    return InputDecoration(
+      filled: true,
+      fillColor: Colors.white.withOpacity(0.9),
+      labelText: label,
+      prefixIcon: Icon(icon, color: Colors.brown),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(authViewModelProvider);
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () =>
-              FocusScope.of(context).unfocus(), 
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    'Create Account',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.deepOrange,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
+      body: Stack(
+        children: [
+          // Background image filling the entire screen with dark overlay
+          Positioned.fill(
+            child: Image.network(
+              'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1740&q=80',
+              fit: BoxFit.cover,
+              color: Colors.black.withOpacity(0.4),
+              colorBlendMode: BlendMode.darken,
+            ),
+          ),
 
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 4,
-                    shadowColor: Colors.black12,
-                    child: Column(
-                      children: [
-                        _buildTextField(
-                          controller: fullNameController,
-                          label: 'Full Name',
-                          icon: Icons.person_outline,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Full Name is required' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          controller: emailController,
-                          label: 'Email Address',
-                          icon: Icons.email_outlined,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Email is required' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          controller: userNameController,
-                          label: 'Username',
-                          icon: Icons.account_circle_outlined,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Username is required' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          controller: phoneController,
-                          label: 'Phone Number',
-                          icon: Icons.phone_outlined,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) => value!.isEmpty
-                              ? 'Phone number is required'
-                              : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          controller: passwordController,
-                          label: 'Password',
-                          icon: Icons.lock_outline,
-                          obscureText: _obscurePassword,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Password is required' : null,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.deepOrange,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: state.isLoading ? null : _submit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                        elevation: 3,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+          // Foreground content (form)
+          SafeArea(
+            child: SizedBox.expand(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                      child: state.isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              'Register',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
+                    ),
+                    const SizedBox(height: 30),
+
+                    // Form container with white semi-transparent background
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          )
+                        ],
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            // First and Last name row
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: firstNameController,
+                                    decoration: _inputDecoration(
+                                      "First Name",
+                                      Icons.person_outline,
+                                    ),
+                                    validator: (value) =>
+                                        value!.isEmpty ? "Required" : null,
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: lastNameController,
+                                    decoration: _inputDecoration(
+                                      "Last Name",
+                                      Icons.person_outline,
+                                    ),
+                                    validator: (value) =>
+                                        value!.isEmpty ? "Required" : null,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: emailController,
+                              decoration: _inputDecoration(
+                                "Email",
+                                Icons.email_outlined,
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) =>
+                                  value!.isEmpty ? "Required" : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: userNameController,
+                              decoration: _inputDecoration(
+                                "Username",
+                                Icons.account_circle_outlined,
+                              ),
+                              validator: (value) =>
+                                  value!.isEmpty ? "Required" : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: phoneController,
+                              decoration: _inputDecoration(
+                                "Phone Number",
+                                Icons.phone,
+                              ),
+                              keyboardType: TextInputType.phone,
+                              validator: (value) =>
+                                  value!.isEmpty ? "Required" : null,
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: passwordController,
+                              obscureText: _hidePassword,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white.withOpacity(0.9),
+                                labelText: "Password",
+                                prefixIcon: const Icon(
+                                  Icons.lock_outline,
+                                  color: Colors.brown,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _hidePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                    color: Colors.brown,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _hidePassword = !_hidePassword;
+                                    });
+                                  },
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                              validator: (value) =>
+                                  value!.isEmpty ? "Required" : null,
+                            ),
+                            const SizedBox(height: 24),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: state.isLoading ? null : _submit,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF4E342E),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: state.isLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        "Register",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                               ),
                             ),
+                            const SizedBox(height: 16),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.loginRoute,
+                                );
+                              },
+                              child: const Text(
+                                "Already have an account? Login",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: InkWell(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.loginRoute),
-                      child: const Text("Already have an account? Login"),
-                    ),
-                  ),
-                ],
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required IconData icon,
-    TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false,
-    Widget? suffixIcon,
-    required String? Function(String?) validator,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      validator: validator,
-      style: const TextStyle(fontSize: 15),
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: Colors.deepOrange),
-        suffixIcon: suffixIcon,
-        labelText: label,
-        floatingLabelStyle: const TextStyle(color: Colors.deepOrange),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
-        ),
-        filled: true,
-        fillColor: Colors.grey[50],
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.deepOrange, width: 1.4),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red.shade300),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        ],
       ),
     );
   }

@@ -11,25 +11,37 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, AuthState>((
   ref,
 ) {
-  return AuthViewModel(ref.read(registerUsecaseProvider), ref.read(loginUsecaseProvider));
+  return AuthViewModel(
+    ref.read(registerUsecaseProvider),
+    ref.read(loginUsecaseProvider),
+  );
 });
 
 class AuthViewModel extends StateNotifier<AuthState> {
   final RegisterUsecase registerUsecase;
   final LoginUsecase loginUsecase;
 
-  AuthViewModel(this.registerUsecase, this.loginUsecase) : super(AuthState.initial());
+  AuthViewModel(this.registerUsecase, this.loginUsecase)
+    : super(AuthState.initial());
 
   Future<void> register({
-     required String fullName,
+    required String firstName,
+    required String lastName,
     required String email,
     required String userName,
     required String phoneNumber,
     required String password,
-    required BuildContext context
+    required BuildContext context,
   }) async {
     state = state.copyWith(isLoading: false);
-    final result = await registerUsecase.register(fullName: fullName, email: email, userName: userName, phoneNumber: phoneNumber, password: password);
+    final result = await registerUsecase.register(
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      userName: userName,
+      phoneNumber: phoneNumber,
+      password: password,
+    );
 
     result.fold(
       (failure) {
@@ -59,37 +71,43 @@ class AuthViewModel extends StateNotifier<AuthState> {
     );
   }
 
-  Future<void> login(
-     {
-      required String userName, required String password, required BuildContext context
-     }) async {
+  Future<void> login({
+    required String userName,
+    required String password,
+    required BuildContext context,
+  }) async {
     state = state.copyWith(isLoading: false);
-    final result = await loginUsecase.login(userName: userName, password: password);
-    result.fold((failure) {
-      state = state.copyWith(
-        error: failure.error.toString(),
-        showMessage: true,
-      );
-      showSnackBar(
-          message: failure.error.toString(),
-          context: context,
-          color: Colors.red);
-    }, (success) {
-      state = state.copyWith(
-        isLoading: false,
-        error: null,
-        showMessage: true,
-      );
-            EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
+    final result = await loginUsecase.login(
+      userName: userName,
+      password: password,
+    );
+    result.fold(
+      (failure) {
+        state = state.copyWith(
+          error: failure.error.toString(),
+          showMessage: true,
+        );
+       EasyLoading.showError(failure.error, dismissOnTap: true);
+      },
+      (success) {
+        state = state.copyWith(
+          isLoading: false,
+          error: null,
+          showMessage: true,
+        );
+        EasyLoading.show(
+          status: 'Please Wait...',
+          maskType: EasyLoadingMaskType.black,
+        );
 
-      Future.delayed(const Duration(seconds: 2), () {
-        Navigator.pushReplacementNamed(context, AppRoutes.bootomNavRoute);
-      EasyLoading.showSuccess('Loggedin in',);
-        EasyLoading.dismiss();
-      });
-    });
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacementNamed(context, AppRoutes.bootomNavRoute);
+          EasyLoading.showSuccess('Loggedin in');
+          EasyLoading.dismiss();
+        });
+      },
+    );
   }
 }
 
-class AppRoute {
-}
+class AppRoute {}

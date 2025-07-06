@@ -20,7 +20,8 @@ class AuthRemoteDatasource {
   AuthRemoteDatasource({required this.dio, required this.flutterSecureStorage});
 
   Future<Either<Failure, bool>> register({
-    required String fullName,
+    required String firstName,
+    required String lastName,
     required String email,
     required String userName,
     required String phoneNumber,
@@ -30,7 +31,8 @@ class AuthRemoteDatasource {
       final url = ApiEndpoints.register;
 
       final formData = FormData.fromMap({
-        'fullName': fullName,
+        'firstName': firstName,
+        'lastName': lastName,
         'email': email,
         'userName': userName,
         'phoneNumber': phoneNumber,

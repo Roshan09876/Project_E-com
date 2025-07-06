@@ -6,7 +6,8 @@ part 'auth_api_model.g.dart';
 class AuthApiModel {
   @JsonKey(name: "_id")
   final String? id;
-  final String? fullName;
+  final String? firstName;
+  final String? lastName;
   final String? email;
   final String? userName;
   final String? phoneNumber;
@@ -20,7 +21,8 @@ class AuthApiModel {
 
   AuthApiModel({
     this.id,
-    this.fullName,
+    this.firstName,
+    this.lastName,
     this.email,
     this.userName,
     this.phoneNumber,

@@ -22,7 +22,8 @@ class AuthState {
       imageName: null,
       showMessage: false,
       currentUser: AuthApiModel(
-        fullName: null,
+        firstName: null,
+        lastName: null,
         email: null,
         userName: null,
         phoneNumber: null,

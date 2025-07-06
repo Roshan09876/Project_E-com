@@ -10,7 +10,8 @@ final iauthRepositoryProvider =
 
 abstract class IauthRepository {
   Future<Either<Failure, bool>> register({
-     required String fullName,
+    required String firstName,
+    required String lastName,
     required String email,
     required String userName,
     required String phoneNumber,
