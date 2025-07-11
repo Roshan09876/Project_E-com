@@ -4,10 +4,10 @@ const cloudinary = require("cloudinary");
 // Create Product
 const createProduct = async (req, res) => {
     try {
-        const { title, description, productType, productPrice } = req.body;
+        const { title, description, productType, productPrice, discountPrice } = req.body;
         let image = req.files && req.files.image;
         console.log(req.body)
-        if (!title || !productPrice || !productType) {
+        if (!title || !productPrice || !productType || !discountPrice) {
             return res.status(400).json({
                 success: false,
                 message: "Required fields missing",
@@ -27,6 +27,7 @@ const createProduct = async (req, res) => {
             description,
             productType,
             productPrice,
+            discountPrice,
             image: uploadedImage.secure_url,
         });
 
