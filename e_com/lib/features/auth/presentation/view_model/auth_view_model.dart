@@ -63,12 +63,13 @@ class AuthViewModel extends StateNotifier<AuthState> {
      {
       required String userName, required String password, required BuildContext context
      }) async {
-    state = state.copyWith(isLoading: false);
+    state = state.copyWith(isLoading: true);
     final result = await loginUsecase.login(userName: userName, password: password);
     result.fold((failure) {
       state = state.copyWith(
         error: failure.error.toString(),
         showMessage: true,
+        isLoading: false
       );
       showSnackBar(
           message: failure.error.toString(),
@@ -80,12 +81,12 @@ class AuthViewModel extends StateNotifier<AuthState> {
         error: null,
         showMessage: true,
       );
-            EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
+            // EasyLoading.show(status: 'Please Wait...', maskType: EasyLoadingMaskType.black);
 
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.pushReplacementNamed(context, AppRoutes.bootomNavRoute);
-      EasyLoading.showSuccess('Loggedin in',);
-        EasyLoading.dismiss();
+      // EasyLoading.showSuccess('Loggedin in',);
+        // EasyLoading.dismiss();
       });
     });
   }
