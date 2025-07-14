@@ -20,27 +20,16 @@ class AuthRemoteDatasource {
   AuthRemoteDatasource({required this.dio, required this.flutterSecureStorage});
 
   Future<Either<Failure, bool>> register({
-    required String fullName,
+    required String name,
     required String email,
-    required String userName,
-    required String phoneNumber,
     required String password,
   }) async {
     try {
       final url = ApiEndpoints.register;
 
-      final formData = FormData.fromMap({
-        'fullName': fullName,
-        'email': email,
-        'userName': userName,
-        'phoneNumber': phoneNumber,
-        'password': password,
-      });
-
       final response = await dio.post(
         url,
-        data: formData,
-        options: Options(contentType: 'multipart/form-data'),
+        data: {'name': name, 'email': email, 'password': password},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -59,22 +48,16 @@ class AuthRemoteDatasource {
       );
     }
   }
+
   Future<Either<Failure, bool>> login({
     required String userName,
     required String password,
   }) async {
     try {
       final url = ApiEndpoints.login;
-
-      final formData = FormData.fromMap({
-        'userName': userName,
-        'password': password,
-      });
-
       final response = await dio.post(
         url,
-        data: formData,
-        options: Options(contentType: 'multipart/form-data'),
+        data: {'email': userName, 'password': password},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

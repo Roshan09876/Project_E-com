@@ -12,13 +12,11 @@ class AuthRemoteRepository implements IauthRepository {
   AuthRemoteRepository(this.authRemoteDatasource);
   @override
   Future<Either<Failure, bool>> register({
-     required String fullName,
+     required String name,
     required String email,
-    required String userName,
-    required String phoneNumber,
     required String password,
   }) async {
-    return authRemoteDatasource.register(fullName: fullName, email: email, userName: userName, phoneNumber: phoneNumber, password: password);
+    return authRemoteDatasource.register(name: name, email: email,  password: password);
   }
   
   @override

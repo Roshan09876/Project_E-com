@@ -10,10 +10,10 @@ class ApiEndpoints {
   static const String baseUrl = "http://localhost:4000/";
 
   //Auth Section
-  static const String register = "api/signup";
-  static const String login = "api/signin";
+  static const String register = "api/user/register";
+  static const String login = "api/user/login";
 
   //Product Section
-  static const String allProducts = "api/products";
+  static const String allProducts = "api/product/list";
 
 }

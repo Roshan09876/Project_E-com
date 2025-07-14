@@ -21,15 +21,13 @@ class AuthViewModel extends StateNotifier<AuthState> {
   AuthViewModel(this.registerUsecase, this.loginUsecase) : super(AuthState.initial());
 
   Future<void> register({
-     required String fullName,
+     required String name,
     required String email,
-    required String userName,
-    required String phoneNumber,
     required String password,
     required BuildContext context
   }) async {
     state = state.copyWith(isLoading: false);
-    final result = await registerUsecase.register(fullName: fullName, email: email, userName: userName, phoneNumber: phoneNumber, password: password);
+    final result = await registerUsecase.register(name: name, email: email, password: password);
 
     result.fold(
       (failure) {

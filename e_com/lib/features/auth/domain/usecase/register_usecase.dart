@@ -11,12 +11,10 @@ class RegisterUsecase {
   RegisterUsecase(this.iauthRepository);
 
   Future<Either<Failure, bool>> register({
-     required String fullName,
+     required String name,
     required String email,
-    required String userName,
-    required String phoneNumber,
     required String password,
   }) {
-    return iauthRepository.register(fullName: fullName, email: email, userName: userName, phoneNumber: phoneNumber, password: password);
+    return iauthRepository.register(name: name, email: email,  password: password);
   }
 }

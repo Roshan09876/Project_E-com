@@ -15,26 +15,32 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
 
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
-  final userNameController = TextEditingController();
-  final phoneController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
       final fullName = fullNameController.text.trim();
       final email = emailController.text.trim();
-      final userName = userNameController.text.trim();
-      final phoneNumber = phoneController.text.trim();
       final password = passwordController.text.trim();
-      ref
-          .read(authViewModelProvider.notifier)
-          .register(
-            fullName: fullName,
+      final confirmPassword = confirmPasswordController.text.trim();
+
+      if (password != confirmPassword) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Passwords do not match'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
+
+      ref.read(authViewModelProvider.notifier).register(
+            name: fullName,
             email: email,
-            userName: userName,
-            phoneNumber: phoneNumber,
             password: password,
             context: context,
           );
@@ -45,9 +51,8 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
   void dispose() {
     fullNameController.dispose();
     emailController.dispose();
-    userNameController.dispose();
-    phoneController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -59,8 +64,7 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
       backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: GestureDetector(
-          onTap: () =>
-              FocusScope.of(context).unfocus(), 
+          onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 24),
             child: Form(
@@ -76,7 +80,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                     ),
                   ),
                   const SizedBox(height: 32),
-
                   Card(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -103,24 +106,6 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                         ),
                         const SizedBox(height: 16),
                         _buildTextField(
-                          controller: userNameController,
-                          label: 'Username',
-                          icon: Icons.account_circle_outlined,
-                          validator: (value) =>
-                              value!.isEmpty ? 'Username is required' : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
-                          controller: phoneController,
-                          label: 'Phone Number',
-                          icon: Icons.phone_outlined,
-                          keyboardType: TextInputType.phone,
-                          validator: (value) => value!.isEmpty
-                              ? 'Phone number is required'
-                              : null,
-                        ),
-                        const SizedBox(height: 16),
-                        _buildTextField(
                           controller: passwordController,
                           label: 'Password',
                           icon: Icons.lock_outline,
@@ -137,6 +122,30 @@ class _RegisterViewState extends ConsumerState<RegisterView> {
                             onPressed: () {
                               setState(() {
                                 _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        _buildTextField(
+                          controller: confirmPasswordController,
+                          label: 'Confirm Password',
+                          icon: Icons.lock_outline,
+                          obscureText: _obscureConfirmPassword,
+                          validator: (value) => value!.isEmpty
+                              ? 'Confirm Password is required'
+                              : null,
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirmPassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.deepOrange,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirmPassword =
+                                    !_obscureConfirmPassword;
                               });
                             },
                           ),
