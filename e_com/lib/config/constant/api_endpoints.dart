@@ -7,7 +7,7 @@ class ApiEndpoints {
   //For Android
   // static const String baseUrl = 'http://10.0.2.2:5500/';
   //For Mac
-  static const String baseUrl = "http://localhost:5500/";
+  static const String baseUrl = "http://localhost:4000/";
 
   //Auth Section
   static const String register = "api/signup";

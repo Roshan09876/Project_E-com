@@ -1,36 +1,30 @@
 import 'package:json_annotation/json_annotation.dart';
 
+
 part 'auth_api_model.g.dart';
 
 @JsonSerializable()
 class AuthApiModel {
-  @JsonKey(name: "_id")
-  final String? id;
-  final String? fullName;
-  final String? email;
-  final String? userName;
-  final String? phoneNumber;
-  final String? password;
-
-  @JsonKey(defaultValue: false)
-  final bool isAdmin;
-
-  @JsonKey(defaultValue: '')
-  final String image;
-
   AuthApiModel({
     this.id,
-    this.fullName,
+    this.name,
     this.email,
-    this.userName,
-    this.phoneNumber,
     this.password,
-    this.isAdmin = false,
-    this.image = '',
+    this.isAdmin,
+    this.cartData,
+    this.v
   });
-
-  factory AuthApiModel.fromJson(Map<String, dynamic> json) =>
-      _$AuthApiModelFromJson(json);
-
+  @JsonKey(name: "_id")
+   final String? id;
+    final String? name;
+    final String? email;
+    final String? password;
+    @JsonKey(defaultValue: false)
+    final bool? isAdmin;
+    final Map<String, int>? cartData;
+    final int? v;
   Map<String, dynamic> toJson() => _$AuthApiModelToJson(this);
+
+  factory AuthApiModel.fromJson(Map<String, dynamic> json) => _$AuthApiModelFromJson(json);
 }
+

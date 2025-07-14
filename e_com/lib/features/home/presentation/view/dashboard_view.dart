@@ -185,14 +185,14 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                       borderRadius: const BorderRadius.vertical(
                         top: Radius.circular(20), 
                       ),
-                      image: product.image.isNotEmpty
+                      image: product.image!.isNotEmpty
                           ? DecorationImage(
-                              image: NetworkImage(product.image),
+                              image: NetworkImage(product.image![0]),
                               fit: BoxFit.cover,
                             )
                           : null,
                     ),
-                    child: product.image.isEmpty
+                    child: product.image!.isEmpty 
                         ? Center(
                             child: Icon(
                               Icons.image_not_supported_outlined,
@@ -209,7 +209,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        product.title,
+                        product.name ?? "N/A",
                         maxLines: 2, 
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -220,7 +220,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                       ),
                       const SizedBox(height: 6), 
                       Text(
-                        'Rs. ${product.productPrice}',
+                        'Rs. ${product.price}',
                         style: const TextStyle(
                           color: Color(0xFFE53935), 
                           fontWeight: FontWeight.w900, 

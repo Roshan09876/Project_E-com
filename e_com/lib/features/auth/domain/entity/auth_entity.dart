@@ -1,20 +1,20 @@
-class AuthEntity{
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+class AuthEntity {
+
+   final String? id;
+    final String? name;
+    final String? email;
+    final String? password;
+    final bool? isAdmin;
+    final Map<String, int>? cartData;
+    final int? v;
   AuthEntity({
     this.id,
-    this.fullName,
+    this.name,
     this.email,
-    this.userName,
-    this.phoneNumber,
     this.password,
     this.isAdmin,
-    this.image
+    this.cartData,
+    this.v,
   });
-    final String? id;
-  final String? fullName;
-  final String? email;
-  final String? userName;
-  final String? phoneNumber;
-  final String? password;
-  final bool? isAdmin;
-  final String? image;
 }
