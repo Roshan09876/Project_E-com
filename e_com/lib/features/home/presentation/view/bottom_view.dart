@@ -41,8 +41,8 @@ class _BottomViewState extends ConsumerState<BottomView> {
           tabBorderRadius: 16,
           tabs: const [
             GButton(icon: Icons.home, text: 'Home'),
-            GButton(icon: Icons.search, text: 'Search'),
             GButton(icon: Icons.person_outline, text: 'Profile'),
+            GButton(icon: Icons.shopping_cart, text: 'Cart'),
           ],
         ),
       ),

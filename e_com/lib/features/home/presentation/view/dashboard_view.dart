@@ -1,4 +1,3 @@
-import 'package:e_com/config/router/app_routes.dart';
 import 'package:e_com/features/cart/presentation/view/cart_view.dart';
 import 'package:e_com/features/products/presentation/view/products_detail_view.dart';
 import 'package:flutter/material.dart';
@@ -59,9 +58,6 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
                     color: Colors.brown,
                   ),
                 ),
-                _buildQuickAccess(Icons.favorite, "Favorites", () {
-                  Navigator.pushNamed(context, AppRoutes.favPageRoute);
-                }),
                 _buildQuickAccess(Icons.shopping_bag, "Orders", () {
                   // Navigator.pushNamed(context, AppRoutes.cartPageRoute);
                   Navigator.push(
