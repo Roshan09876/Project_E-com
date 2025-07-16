@@ -20,6 +20,33 @@ class CartRemoteDatasource {
   final FlutterSecureStorage flutterSecureStorage;
   CartRemoteDatasource({required this.dio, required this.flutterSecureStorage});
 
+  Future<Either<Failure, bool>> addToCart({
+    required String productId,
+    required int quantity,
+  }) async {
+    try {
+      final userId = await flutterSecureStorage.read(key: 'userId');
+      if (userId == null) {
+        return Left(Failure(error: 'User not logged in'));
+      }
+
+      final response = await dio.post(
+        ApiEndpoints.addToCart,
+        data: {"userId": userId, "productId": productId, "quantity": quantity},
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return const Right(true);
+      } else {
+        return Left(
+          Failure(error: response.data['message'] ?? 'Failed to add to cart'),
+        );
+      }
+    } catch (e) {
+      return Left(Failure(error: 'Add to cart failed: ${e.toString()}'));
+    }
+  }
+
   Future<Either<Failure, List<CartApiModel>>> getAllCart() async {
     try {
       final userId = await flutterSecureStorage.read(key: 'userId');
@@ -46,15 +73,15 @@ class CartRemoteDatasource {
     }
   }
 
-  Future<Either<Failure, bool>> login({
-    required String userName,
-    required String password,
+  Future<Either<Failure, bool>> removeFromCart({
+    required String userId,
+    required String productId,
   }) async {
     try {
-      final url = ApiEndpoints.login;
-      final response = await dio.post(
+      final url = ApiEndpoints.removeFromCart;
+      final response = await dio.delete(
         url,
-        data: {'email': userName, 'password': password},
+        data: {'userId': userId, 'productId': productId},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -67,10 +94,8 @@ class CartRemoteDatasource {
           ),
         );
       }
-    } on DioException catch (e) {
-      return Left(
-        Failure(error: e.response?.data['message'] ?? 'Registration failed'),
-      );
+    } catch (e) {
+      return Left(Failure(error: 'Failed to remove item from cart'));
     }
   }
 }

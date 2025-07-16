@@ -19,6 +19,9 @@ class ApiEndpoints {
   static const String productByID = "api/product/single";
 
   //Cart Section
+  static const String addToCart = "api/cart/add";
   static const String allCart = "api/cart/list";
+  static const String removeFromCart = "api/cart/remove";
+
 
 }
