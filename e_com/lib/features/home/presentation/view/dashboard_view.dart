@@ -47,13 +47,6 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
 
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.shopping_bag_outlined, color: Color(0xFFE53935), size: 28), // Modern bag icon
-            onPressed: () {
-
-            },
-          ),
-          const SizedBox(width: 12),
         ],
       ),
       body: Padding(
