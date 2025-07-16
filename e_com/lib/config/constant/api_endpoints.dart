@@ -12,6 +12,7 @@ class ApiEndpoints {
   //Auth Section
   static const String register = "api/user/register";
   static const String login = "api/user/login";
+  static const String profile = "api/user/profile";
 
   //Product Section
   static const String allProducts = "api/product/list";

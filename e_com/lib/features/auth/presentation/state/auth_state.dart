@@ -5,14 +5,14 @@ class AuthState {
   final String? error;
   final String? imageName;
   final bool? showMessage;
-  final AuthApiModel? authApiModel;
+  final AuthApiModel? profileData;
 
   AuthState({
     required this.isLoading,
     this.error,
     this.imageName,
     this.showMessage,
-    this.authApiModel,
+    this.profileData,
   });
 
   factory AuthState.initial() {
@@ -21,7 +21,7 @@ class AuthState {
       error: null,
       imageName: null,
       showMessage: false,
-      authApiModel: null,
+      profileData: null,
     );
   }
 
@@ -30,18 +30,18 @@ class AuthState {
     String? error,
     String? imageName,
     bool? showMessage,
-    AuthApiModel? currentUser,
+    AuthApiModel? profileData,
   }) {
     return AuthState(
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       imageName: imageName ?? this.imageName,
       showMessage: showMessage ?? this.showMessage,
-      authApiModel: authApiModel ?? this.authApiModel,
+      profileData: profileData ?? this.profileData,
     );
   }
 
   @override
   String toString() =>
-      'AuthState(isLoading: $isLoading, error: $error, currentUser: $authApiModel)';
+      'AuthState(isLoading: $isLoading, error: $error, currentUser: $profileData)';
 }
