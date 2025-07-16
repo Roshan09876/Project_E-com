@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_com/core/failure/failure.dart';
+import 'package:e_com/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:e_com/features/auth/domain/usecase/login_usecase.dart';
 import 'package:e_com/features/auth/domain/usecase/register_usecase.dart';
 import 'package:e_com/features/auth/presentation/view_model/auth_view_model.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+class MockAuthRemoteDataSource extends Mock implements AuthRemoteDatasource {}
 class MockLoginUseCase extends Mock implements LoginUsecase {}
 
 class MockRegisterUseCase extends Mock implements RegisterUsecase {}
@@ -14,6 +16,7 @@ class MockRegisterUseCase extends Mock implements RegisterUsecase {}
 class FakeBuildContext extends Fake implements BuildContext {}
 
 void main() {
+  late MockAuthRemoteDataSource mockAuthRemoteDataSource;
   late MockRegisterUseCase mockRegisterUseCase;
   late MockLoginUseCase mockLoginUseCase;
   late FakeBuildContext fakeContext;
@@ -26,9 +29,10 @@ void main() {
 
   setUp(() {
     fakeContext = FakeBuildContext();
+    mockAuthRemoteDataSource = MockAuthRemoteDataSource();
     mockLoginUseCase = MockLoginUseCase();
     mockRegisterUseCase = MockRegisterUseCase();
-    authViewModel = AuthViewModel(mockRegisterUseCase, mockLoginUseCase);
+    authViewModel = AuthViewModel(mockAuthRemoteDataSource, mockRegisterUseCase, mockLoginUseCase);
   });
 
   test('initial state should not be loading', () {

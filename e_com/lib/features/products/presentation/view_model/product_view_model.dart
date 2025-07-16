@@ -22,6 +22,17 @@ class ProductViewModel extends StateNotifier<ProductState> {
       (r) => state = state.copyWith(products: r, isLoading: false, error: null),
     );
   }
-
+  Future<void> fetchProductByID({required String id}) async {
+    state = state.copyWith(isLoading: true);
+    final result = await _dataSource.getProductById(id: id);
+    result.fold(
+      (l) => state = state.copyWith(isLoading: false, error: l.error),
+      (r) => state = state.copyWith(
+        productData: r,
+        isLoading: false,
+        error: null,
+      ),
+    );
+  }
 
 }

@@ -34,4 +34,23 @@ class ProductRemoteDataSource {
   }
 }
 
+
+  Future<Either<Failure, ProductApiModel>> getProductById({
+    required String id,
+  }) async {
+    try {
+      final url = "${ApiEndpoints.productByID}/$id";
+      final response = await dio.get(url);
+      if (response.statusCode == 200) {
+        final data = response.data['product'];
+         final product = ProductApiModel.fromJson(data);
+        return Right(product);
+      } else {
+        return Left(Failure(error: 'Failed to fetch products'));
+      }
+    } catch (e) {
+      return Left(Failure(error: e.toString()));
+    }
+  }
+
 }

@@ -12,6 +12,7 @@ class AuthApiModel {
   final String? userName;
   final String? phoneNumber;
   final String? password;
+  final Map<String, int>? cartData;
 
   @JsonKey(defaultValue: false)
   final bool isAdmin;
@@ -29,6 +30,7 @@ class AuthApiModel {
     this.password,
     this.isAdmin = false,
     this.image = '',
+    this.cartData,
   });
 
   factory AuthApiModel.fromJson(Map<String, dynamic> json) =>

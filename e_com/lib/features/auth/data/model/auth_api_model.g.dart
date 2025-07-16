@@ -16,6 +16,9 @@ AuthApiModel _$AuthApiModelFromJson(Map<String, dynamic> json) => AuthApiModel(
   password: json['password'] as String?,
   isAdmin: json['isAdmin'] as bool? ?? false,
   image: json['image'] as String? ?? '',
+  cartData: (json['cartData'] as Map<String, dynamic>?)?.map(
+    (k, e) => MapEntry(k, (e as num).toInt()),
+  ),
 );
 
 Map<String, dynamic> _$AuthApiModelToJson(AuthApiModel instance) =>
@@ -27,6 +30,7 @@ Map<String, dynamic> _$AuthApiModelToJson(AuthApiModel instance) =>
       'userName': instance.userName,
       'phoneNumber': instance.phoneNumber,
       'password': instance.password,
+      'cartData': instance.cartData,
       'isAdmin': instance.isAdmin,
       'image': instance.image,
     };

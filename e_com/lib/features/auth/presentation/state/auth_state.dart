@@ -5,14 +5,14 @@ class AuthState {
   final String? error;
   final String? imageName;
   final bool? showMessage;
-  final AuthApiModel currentUser;
+  final AuthApiModel? currentUser;
 
   AuthState({
     required this.isLoading,
     this.error,
     this.imageName,
     this.showMessage,
-    required this.currentUser,
+     this.currentUser,
   });
 
   factory AuthState.initial() {
@@ -21,15 +21,7 @@ class AuthState {
       error: null,
       imageName: null,
       showMessage: false,
-      currentUser: AuthApiModel(
-        firstName: null,
-        lastName: null,
-        email: null,
-        userName: null,
-        phoneNumber: null,
-        password: null,
-        image: "",
-      ),
+      currentUser: null
     );
   }
 

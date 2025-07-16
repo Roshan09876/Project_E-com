@@ -30,6 +30,7 @@ cloudinary.config({
 
 app.use("/api", require("./routes/userRoute"))
 app.use("/api", require("./routes/productRoutes"))
+app.use("/api/cart", require("./routes/cartRoutes"))
 
 app.get('/', (req, res) => {
     res.send("Hello from the server");

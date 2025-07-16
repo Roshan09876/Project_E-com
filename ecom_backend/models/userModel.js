@@ -31,7 +31,11 @@ const userSchema = new mongoose.Schema({
     image: {
         type: String,
         required: false
-    }
+    },
+      cartData: {
+      type: Object,
+      default: {},
+    },
 }, { timestamps: true });
 
 const User = mongoose.model('user', userSchema)
