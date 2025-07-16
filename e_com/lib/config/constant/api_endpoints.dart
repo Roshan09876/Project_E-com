@@ -16,4 +16,7 @@ class ApiEndpoints {
   //Product Section
   static const String allProducts = "api/product/list";
 
+  //Cart Section
+  static const String allCart = "api/cart/list";
+
 }

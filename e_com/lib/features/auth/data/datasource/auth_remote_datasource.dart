@@ -61,6 +61,10 @@ class AuthRemoteDatasource {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        await flutterSecureStorage.write(
+          key: "userId",
+          value: response.data['user']['_id'],
+        );
         return Right(true);
       } else {
         return Left(
