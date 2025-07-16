@@ -51,6 +51,7 @@ dependencies:
   accordion: ^2.6.0
   intl: ^0.20.2
   google_nav_bar: ^5.0.7
+  carousel_slider: ^5.1.1
   
 
 dev_dependencies:

@@ -5,9 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final productViewModelProvider =
     StateNotifierProvider<ProductViewModel, ProductState>((ref) {
-  final dataSource = ref.read(productRemoteDataSourceProvider);
-  return ProductViewModel(dataSource);
-});
+      final dataSource = ref.read(productRemoteDataSourceProvider);
+      return ProductViewModel(dataSource);
+    });
 
 class ProductViewModel extends StateNotifier<ProductState> {
   final ProductRemoteDataSource _dataSource;
@@ -23,5 +23,16 @@ class ProductViewModel extends StateNotifier<ProductState> {
     );
   }
 
-
+  Future<void> fetchProductByID({required String id}) async {
+    state = state.copyWith(isLoading: true);
+    final result = await _dataSource.getProductById(id: id);
+    result.fold(
+      (l) => state = state.copyWith(isLoading: false, error: l.error),
+      (r) => state = state.copyWith(
+        singleProduct: r,
+        isLoading: false,
+        error: null,
+      ),
+    );
+  }
 }
